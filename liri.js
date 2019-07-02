@@ -1,5 +1,5 @@
 require("dotenv").config();
-var NodeGeocoder = require("node-geocoder");
+// var NodeGeocoder = require("node-geocoder");
 var axios = require("axios");
 var Spotify = require('node-spotify-api');
 var keys = require("./keys");
@@ -120,13 +120,20 @@ function bandsInTown(){
 
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
   function(response) {
-    console.log("Venue: ", response.data[i].venue.name, "\n ",
-                "Location: ", response.data.Year, "\n ",
-                "Event Date: ", response.data[i].datetime, "\n ",
+      
+    for (var i=0; i< response.data[i].length; i++){
+
+    console.log(
+   
+        "Venue: ", response.data[i].venue.name, "\n ",
+                // "Location: ", response.data.Year, "\n ",
+                "Event Date: ", response.data[i].datetime.format("MM/DD/YYYY"), "\n ",
                 
-                );
-  })
-}
+                )};
+  
+});
+};
+
 
 
 
