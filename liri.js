@@ -3,6 +3,7 @@ require("dotenv").config();
 var axios = require("axios");
 var Spotify = require('node-spotify-api');
 var keys = require("./keys");
+var moment = require("moment");
 
 // --------------Spotify-------------
 
@@ -79,8 +80,8 @@ axios.get("http://www.omdbapi.com/?t=" + movieInput + "=&plot=short&apikey=trilo
                 "Actors: ", response.data.Actors, "\n ",
                 );
   })
-  .catch(function(error) {
-    if (error.response) {
+  .catch(function() {
+   
         
         axios.get("http://www.omdbapi.com/?t=Mr.Nobody=&plot=short&apikey=trilogy").then(
   function(response) {
@@ -94,15 +95,12 @@ axios.get("http://www.omdbapi.com/?t=" + movieInput + "=&plot=short&apikey=trilo
                 "Actors: ", response.data.Actors, "\n ",
                 );
   })
+})
+}
       
 
-    }else {
-      // Something happened in setting up the request that triggered an Error
-      console.log("Error", error.message);
-    }
-    console.log(error.config);
-  });
-}
+    
+
 
 // ------------Concerts-----------
 
@@ -121,18 +119,24 @@ function bandsInTown(){
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
   function(response) {
       
-    for (var i=0; i< response.data[i].length; i++){
+    for (var i=0; i< response.data.length; i++){
 
     console.log(
    
         "Venue: ", response.data[i].venue.name, "\n ",
-                // "Location: ", response.data.Year, "\n ",
-                "Event Date: ", response.data[i].datetime.format("MM/DD/YYYY"), "\n ",
+                "Location: ", response.data[i].venue.city + " " + response.data[i].venue.region + " " + response.data[i].venue.country + "\n" ,
+                "Event Date: ", moment(response.data[i].datetime).format("MM/DD/YYYY") , "\n ",
                 
                 )};
   
-});
+})
+.catch(function(){
+  console.log("Error")
+})
 };
+
+
+// ----------------do-what-it-says------------------
 
 
 
