@@ -4,6 +4,8 @@ var axios = require("axios");
 var Spotify = require('node-spotify-api');
 var keys = require("./keys");
 var moment = require("moment");
+var fs = require("fs");
+
 
 // --------------Spotify-------------
 
@@ -14,13 +16,13 @@ var userCommand = process.argv[2];
 
 switch (userCommand) {
     case "spotify-this-song":
-        findSpotify();
+        findSpotify(userInput);
         break;
 
 }
 
-function findSpotify() {
-    spotify.search({ type: "track", query: userInput }, function (err, response) {
+function findSpotify(songName) {
+    spotify.search({ type: "track", query: songName }, function (err, response) {
         if (err) {
             return console.log(err)
         }
@@ -138,6 +140,37 @@ axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=cod
 
 // ----------------do-what-it-says------------------
 
+var artist=process.argv.slice(3).join(" ");
+var userCommand = process.argv[2];
+
+switch (userCommand) {
+    case "do-what-it-says":
+        doWhatItSay();
+        break;
+
+}
+
+function doWhatItSay(){
+
+fs.readFile("random.txt", "utf8", function(error, data) {
+
+  // If the code experiences any errors it will log the error to the console.
+  if (error) {
+    return console.log(error);
+  }
+
+  // We will then print the contents of data
+
+  // Then split it by commas (to make it more readable)
+  var dataArr = data.split(",");
+
+  // We will then re-display the content as an array for later use.
+  console.log(dataArr[1]);
+  findSpotify(dataArr[1]);
+
+
+});
+};
 
 
 
